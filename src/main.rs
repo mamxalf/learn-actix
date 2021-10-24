@@ -12,7 +12,7 @@ async fn main() -> std::io::Result<()> {
             .route("/", web::get().to(home))
             .service(
                 web::scope("/api/v1")
-                    .configure(routers::call)
+                    .configure(routers::v1)
             )
     })
         .bind("127.0.0.1:8080")?
