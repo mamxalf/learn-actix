@@ -5,24 +5,35 @@ mod routers;
 use handlers::log_config;
 
 // use depedencies
-use actix_web::{web, App, HttpServer, HttpResponse, Responder};
+use actix_web::{web, middleware, App, HttpServer, HttpResponse, Responder};
+use std::env;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+    // Init ENV
     dotenv::dotenv().ok();
+
+    // Address App
+    let address = format!("{}:{}",
+                          env::var("APP_HOST").expect("APP_HOST not defined in ENV"),
+                          env::var("APP_PORT").expect("APP_PORT not defined in ENV")
+    );
+
+    // Init Log
     log_config::init();
-    log::info!("Booting Up!");
+    log::info!("Booting Up!, {}", address);
 
     // Init Server
     HttpServer::new(|| {
         App::new()
+            .wrap(middleware::Logger::default())
             .route("/", web::get().to(home))
             .service(
                 web::scope("/api/v1")
                     .configure(routers::v1)
             )
     })
-        .bind("127.0.0.1:8080")?
+        .bind(address)?
         .run()
         .await
 }
