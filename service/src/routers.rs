@@ -10,6 +10,7 @@ pub fn v1(config: &mut web::ServiceConfig) {
     // Example User Resource
     config.service(examples::users::index);
     config.service(examples::users::show);
+    config.service(examples::users::store);
 
     // Another Resource
 }

@@ -1,7 +1,8 @@
-use actix_web::{get, web, HttpResponse, Result};
+use actix_web::{web, get, post, HttpResponse, Result};
 use serde::{Serialize, Deserialize};
+use serde_json::json;
 
-#[derive(Serialize)]
+#[derive(Serialize, Deserialize)]
 struct User {
     name: String,
     email: String
@@ -15,7 +16,8 @@ pub async fn index() -> Result<HttpResponse> {
     };
 
     // let user_json = serde_json::to_string(&user).unwrap();
-    Ok(HttpResponse::Ok().json(user))
+    let res = json!({ "data": user });
+    Ok(HttpResponse::Ok().json(handlers::formatter::success(res)))
 }
 
 #[derive(Deserialize)]
@@ -24,7 +26,7 @@ struct Info {
 }
 
 #[get("/users/{user_id}")]
-pub async fn show(user_id: web::Path<String>, query: Option<web::Query<Info>>) -> Result<String> {
+pub async fn show(user_id: web::Path<String>, query: Option<web::Query<Info>>) -> Result<HttpResponse> {
     let body = if query.is_none() {
         format!("User ID {}", user_id)
     } else {
@@ -37,5 +39,17 @@ pub async fn show(user_id: web::Path<String>, query: Option<web::Query<Info>>) -
     //     false => format!("User ID {}, Search: {}", user_id, query.unwrap().keyword)
     // };
 
-    Ok(body)
+    let res = json!({ "data": body });
+    Ok(HttpResponse::Ok().json(handlers::formatter::success(res)))
+}
+
+#[post("/users")]
+pub async fn store(user: web::Json<User>) -> Result<HttpResponse> {
+    let user = User {
+        name: user.name.clone(),
+        email: user.email.clone()
+    };
+
+    let res = json!({ "data": user });
+    Ok(HttpResponse::Ok().json(handlers::formatter::success(res)))
 }

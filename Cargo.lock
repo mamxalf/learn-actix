@@ -730,6 +730,7 @@ dependencies = [
  "chrono",
  "fern",
  "log",
+ "serde_json",
 ]
 
 [[package]]
@@ -1363,6 +1364,7 @@ name = "service"
 version = "0.1.0"
 dependencies = [
  "actix-web",
+ "handlers",
  "serde",
  "serde_json",
 ]
