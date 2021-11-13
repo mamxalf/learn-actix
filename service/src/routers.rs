@@ -1,4 +1,5 @@
 mod examples;
+mod users;
 
 use actix_web::{web};
 
@@ -8,9 +9,9 @@ pub fn v1(config: &mut web::ServiceConfig) {
     config.service(examples::resource::hello);
 
     // Example User Resource
-    config.service(examples::users::index);
-    config.service(examples::users::show);
-    config.service(examples::users::store);
+    config.service(
+        web::scope("/users").configure(users::routers::call)
+    );
 
     // Another Resource
 }

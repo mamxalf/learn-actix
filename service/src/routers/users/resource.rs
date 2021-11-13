@@ -1,14 +1,8 @@
-use actix_web::{web, get, post, HttpResponse, Result};
-use serde::{Serialize, Deserialize};
+use actix_web::{web, HttpResponse, Result};
 use serde_json::json;
 
-#[derive(Serialize, Deserialize)]
-struct User {
-    name: String,
-    email: String
-}
+use crate::routers::users::dao::{User, Info};
 
-#[get("/users")]
 pub async fn index() -> Result<HttpResponse> {
     let user = User {
         name: String::from("Dummy User"),
@@ -20,12 +14,6 @@ pub async fn index() -> Result<HttpResponse> {
     Ok(HttpResponse::Ok().json(handlers::formatter::success(res)))
 }
 
-#[derive(Deserialize)]
-struct Info {
-    keyword: String
-}
-
-#[get("/users/{user_id}")]
 pub async fn show(user_id: web::Path<String>, query: Option<web::Query<Info>>) -> Result<HttpResponse> {
     let body = if query.is_none() {
         format!("User ID {}", user_id)
@@ -43,7 +31,6 @@ pub async fn show(user_id: web::Path<String>, query: Option<web::Query<Info>>) -
     Ok(HttpResponse::Ok().json(handlers::formatter::success(res)))
 }
 
-#[post("/users")]
 pub async fn store(user: web::Json<User>) -> Result<HttpResponse> {
     let user = User {
         name: user.name.clone(),

@@ -25,10 +25,10 @@ async fn main() -> std::io::Result<()> {
     HttpServer::new(|| {
         App::new()
             .wrap(middleware::Logger::default())
+            .wrap(middleware::NormalizePath::default())
             .route("/", web::get().to(home))
             .service(
-                web::scope("/api/v1")
-                    .configure(routers::v1)
+                web::scope("/api/v1").configure(routers::v1)
             )
     })
         .bind(address)?
