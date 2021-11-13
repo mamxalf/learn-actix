@@ -1,5 +1,5 @@
 // Handlers
-use handlers::log_config;
+use handlers::{log_config, database};
 use service::routers;
 
 // use depedencies
@@ -26,6 +26,7 @@ async fn main() -> std::io::Result<()> {
         App::new()
             .wrap(middleware::Logger::default())
             .wrap(middleware::NormalizePath::default())
+            .configure(database::connection)
             .route("/", web::get().to(home))
             .service(
                 web::scope("/api/v1").configure(routers::v1)
