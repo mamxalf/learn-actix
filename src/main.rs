@@ -1,8 +1,6 @@
-// mod => include file
-mod routers;
-
 // Handlers
 use handlers::log_config;
+use service::routers;
 
 // use depedencies
 use actix_web::{web, middleware, App, HttpServer, HttpResponse, Responder};
