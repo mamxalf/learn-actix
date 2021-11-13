@@ -47,3 +47,26 @@ Thumbs.db
 *.mov
 *.wmv
 
+# ca
+ca.crt
+ca.key
+ca.pem
+ca.srl
+client.crt
+client.csr
+client.key
+server.crt
+client.pem
+server.csr
+server.key
+server.pem
+
+# env
+.env
+.env.test
+.env.development
+.env.production
+.env.staging
+
+# buk file
+Cargo.toml.bak
