@@ -21,7 +21,7 @@ async fn main() -> std::io::Result<()> {
 
     // Init Log
     log_config::init();
-    log::info!("Booting Up!, {}", address);
+    log::info!("Booting Up! {}", address);
 
     // Init Server
     HttpServer::new(|| {
